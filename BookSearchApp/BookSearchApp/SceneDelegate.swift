@@ -15,7 +15,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = SearchTapViewController()
+        
+        let tabBarVC = UITabBarController()
+        
+        let vc1 = UINavigationController(rootViewController: SearchTapViewController())
+        let vc2 = StoreTapViewController()
+        
+        vc1.title = "검색 탭"
+        vc2.title = "담은 책 리스트 탭"
+        
+        tabBarVC.setViewControllers([vc1, vc2], animated: false)
+        tabBarVC.modalPresentationStyle = .fullScreen
+        tabBarVC.tabBar.backgroundColor = .white
+        
+        
+        window?.rootViewController = tabBarVC
         window?.makeKeyAndVisible()
     }
 
