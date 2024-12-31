@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StoreListCell: UITableViewCell {
+class SavedListCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()

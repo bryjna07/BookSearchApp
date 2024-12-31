@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StoreTapView: UIView {
+class SavedTapView: UIView {
 
     /*
     // Only override draw() if you perform custom drawing.

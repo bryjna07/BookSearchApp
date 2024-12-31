@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarVC = UITabBarController()
         
         let vc1 = UINavigationController(rootViewController: SearchTapViewController())
-        let vc2 = StoreTapViewController()
+        let vc2 = SavedTapViewController()
         
         vc1.title = "검색 탭"
         vc2.title = "담은 책 리스트 탭"

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StoreTapViewController: UIViewController {
+class SavedTapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
