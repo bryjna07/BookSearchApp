@@ -52,15 +52,18 @@ class SearchListCell: UICollectionViewCell {
         
         bookNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
+            make.centerY.equalToSuperview()
         }
         
         authorNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(bookNameLabel.snp.trailing).offset(10)
+            make.centerY.equalToSuperview()
         }
         
         bookPriceLabel.snp.makeConstraints { make in
             make.leading.equalTo(authorNameLabel.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(10)
+            make.centerY.equalToSuperview()
         }
     }
     

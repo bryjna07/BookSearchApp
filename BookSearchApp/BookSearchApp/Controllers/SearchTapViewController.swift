@@ -20,6 +20,7 @@ class SearchTapViewController: UIViewController {
         
         searchTapView.searchCollectionView.delegate = self
         searchTapView.searchCollectionView.dataSource = self
+        self.navigationController?.navigationBar.isHidden = true
     }
 
 

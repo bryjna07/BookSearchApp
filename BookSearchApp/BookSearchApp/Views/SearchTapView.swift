@@ -103,6 +103,9 @@ final class SearchTapView: UIView {
         )
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        // 아이템 사이의 간격
+        group.interItemSpacing = .fixed(10)
+        group.contentInsets = .init(top: 10, leading: 20, bottom: 10, trailing: 0)
         
         // 섹션
         let section = NSCollectionLayoutSection(group: group)
