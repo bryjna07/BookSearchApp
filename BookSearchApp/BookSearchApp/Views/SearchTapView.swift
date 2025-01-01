@@ -10,13 +10,13 @@ import SnapKit
 
 final class SearchTapView: UIView {
     
-    private lazy var searchBar: UISearchBar = {
+    lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "책이름 검색"
         searchBar.searchBarStyle = .default
         searchBar.backgroundColor = .white
         searchBar.layer.cornerRadius = 10
-        searchBar.layer.borderWidth = 3
+        searchBar.layer.borderWidth = 2
         searchBar.layer.masksToBounds = true
         return searchBar
     }()
@@ -53,7 +53,6 @@ final class SearchTapView: UIView {
         
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top).inset(10)
-            make.height.equalTo(50)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
@@ -63,8 +62,6 @@ final class SearchTapView: UIView {
             make.horizontalEdges.equalTo(self.safeAreaLayoutGuide.snp.horizontalEdges)
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
         }
-        
-        
     }
     
     private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -90,26 +87,25 @@ final class SearchTapView: UIView {
         // 아이템 크기
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(60)
+            heightDimension: .absolute(60)
         )
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        
         // 그룹 크기
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.9),
-            heightDimension: .fractionalHeight(0.7)
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(60)
         )
         
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
         // 아이템 사이의 간격
-        group.interItemSpacing = .fixed(10)
-        group.contentInsets = .init(top: 10, leading: 20, bottom: 10, trailing: 0)
+        group.interItemSpacing = .fixed(16)
+        group.contentInsets = .init(top: 0, leading: 16, bottom: 0, trailing: 16)
         
         // 섹션
         let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
         section.interGroupSpacing = 10
         section.contentInsets = .init(top: 10, leading: 10, bottom: 10, trailing: 10)
         
@@ -128,12 +124,4 @@ final class SearchTapView: UIView {
         
         return section
     }
-}
-
-
-
-
-@available(iOS 17.0, *)
-#Preview {
-    SearchTapViewController()
 }

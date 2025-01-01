@@ -22,12 +22,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         vc1.title = "검색 탭"
         vc2.title = "담은 책 리스트 탭"
+        vc1.tabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 20, weight: .bold)], for: .normal)
+        vc2.tabBarItem.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 20, weight: .bold)], for: .normal)
         
         tabBarVC.setViewControllers([vc1, vc2], animated: false)
         tabBarVC.modalPresentationStyle = .fullScreen
         tabBarVC.tabBar.backgroundColor = .white
         tabBarVC.tabBar.tintColor = .black
-        tabBarVC.tabBar.layer.borderWidth = 3
+        tabBarVC.tabBar.layer.borderWidth = 2
         
         
         window?.rootViewController = tabBarVC

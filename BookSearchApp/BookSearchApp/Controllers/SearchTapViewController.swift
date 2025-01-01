@@ -11,19 +11,23 @@ class SearchTapViewController: UIViewController {
     
     private let searchTapView = SearchTapView()
     
+    let networkManager = NetworkManager.shared
+    
+    var bookArrays: [Document] = []
+    
     override func loadView() {
         self.view = searchTapView
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         searchTapView.searchCollectionView.delegate = self
         searchTapView.searchCollectionView.dataSource = self
         self.navigationController?.navigationBar.isHidden = true
+        
+        searchTapView.searchBar.delegate = self
     }
-
-
 }
 
 extension SearchTapViewController: UICollectionViewDataSource {
@@ -32,47 +36,75 @@ extension SearchTapViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            if section == 0 {
-                return 0
-            } else {
-                return 5
-            }
+        if section == 0 {
+            return 0
+        } else {
+            return bookArrays.count
         }
+    }
     
+    // 섹션별 셀 데이터
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentBooksCell.id, for: indexPath) as! RecentBooksCell
             
-                     return cell
-                 } else {
-                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchListCell.id, for: indexPath) as! SearchListCell
-                     
-                     cell.layer.borderWidth = 3
-                     return cell
-                 }
-             }
-       
-       
-       func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-           let header = collectionView.dequeueReusableSupplementaryView(
-                      ofKind: kind,
-                      withReuseIdentifier: SectionHeader.id,
-                      for: indexPath
-                  ) as! SectionHeader
-                  
-                  switch indexPath.section {
-                  case 0:
-                      header.label.text = "최근 본 책"
-                  case 1:
-                      header.label.text = "검색 결과"
-                  default:
-                      break
-                  }
-                  return header
-              }
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchListCell.id, for: indexPath) as! SearchListCell
+            
+            cell.bookNameLabel.text = bookArrays[indexPath.row].title
+            cell.authorNameLabel.text = bookArrays[indexPath.row].authors?.first
+            cell.bookPriceLabel.text = "\(bookArrays[indexPath.row].price ?? 0)원"
+            
+            cell.layer.borderWidth = 2
+            return cell
+        }
+    }
+    
+    // 섹션에 따른 헤더 설정
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: SectionHeader.id,
+            for: indexPath
+        ) as! SectionHeader
+        
+        switch indexPath.section {
+        case 0:
+            header.label.text = "최근 본 책"
+        case 1:
+            header.label.text = "검색 결과"
+        default:
+            break
+        }
+        return header
+    }
 }
 
 extension SearchTapViewController: UICollectionViewDelegate {
     
 }
 
+extension SearchTapViewController: UISearchBarDelegate {
+    
+    // 검색버튼 눌렀을 때
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchTapView.searchBar.text else { return }
+        print(text)
+        
+        self.bookArrays = []
+        
+        // 네트워킹 시작
+        networkManager.fetchBooks(searchTerm: text) { result in
+            switch result {
+            case .success(let bookDatas):
+                self.bookArrays = bookDatas
+                DispatchQueue.main.async { [weak self] in
+                    self?.searchTapView.searchCollectionView.reloadData()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+}

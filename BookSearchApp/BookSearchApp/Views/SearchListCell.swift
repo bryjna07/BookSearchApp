@@ -14,21 +14,18 @@ class SearchListCell: UICollectionViewCell {
     
     let bookNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "책이름"
         label.textColor = .black
         return label
     }()
     
     let authorNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "작가"
         label.textColor = .gray
         return label
     }()
     
     let bookPriceLabel: UILabel = {
         let label = UILabel()
-        label.text = "10,000원"
         label.textColor = .black
         return label
     }()
