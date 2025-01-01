@@ -10,6 +10,10 @@ import SnapKit
 
 final class DetailBookView: UIView {
     
+    // 2. 뷰컨에 있는 클로저 저장(할당)
+    var saveButtonPressed: () -> Void =  { }
+    var closeButtonPressed: () -> Void =  { }
+    
     let bookTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 24)
@@ -55,6 +59,7 @@ final class DetailBookView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemGreen
         button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -64,6 +69,7 @@ final class DetailBookView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .gray
         button.layer.cornerRadius = 20
+        button.addTarget(self, action: #selector (closeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -77,6 +83,15 @@ final class DetailBookView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // 3. 버튼이 눌리면 ButtonPressed 에 들어있는 클로저 실행
+    @objc func saveButtonTapped(_ sender: UIButton) {
+        saveButtonPressed()
+    }
+    
+    @objc func closeButtonTapped(_ sender: UIButton) {
+        closeButtonPressed()
     }
     
     private func configureUI() {

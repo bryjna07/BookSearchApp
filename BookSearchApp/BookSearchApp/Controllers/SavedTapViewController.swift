@@ -6,24 +6,66 @@
 //
 
 import UIKit
+import SnapKit
 
-class SavedTapViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+final class SavedTapViewController: UIViewController {
+    
+    var savedBooks: [BookSaved] = []
+    
+    let coreDataManager = CoreDataManager.shared
+    
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.dataSource = self
+        tableView.rowHeight = 70
+        tableView.separatorStyle = .none
+        
+        // 셀 등록
+        tableView.register(SavedListCell.self, forCellReuseIdentifier: SavedListCell.id)
+        return tableView
+    }()
+    
+    // 뷰가 나타날때마다
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 코어데이터에 저장된 데이터 불러오기
+        savedBooks = coreDataManager.getBookSavedArrayFromCoreData()
+        tableView.reloadData()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configureUI()
     }
-    */
+    
+    
+    private func configureUI() {
+        
+        view.addSubview(tableView)
+        
+        tableView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+}
 
+extension SavedTapViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        savedBooks.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: SavedListCell.id, for: indexPath) as! SavedListCell
+        
+        let bookSaved = savedBooks[indexPath.row]
+        cell.bookNameLabel.text = bookSaved.title
+        cell.authorNameLabel.text = bookSaved.authors
+        cell.bookPriceLabel.text = bookSaved.price
+        
+        cell.selectionStyle = .none
+        
+        return cell
+    }
 }

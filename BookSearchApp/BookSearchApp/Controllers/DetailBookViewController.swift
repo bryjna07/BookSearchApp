@@ -11,17 +11,12 @@ class DetailBookViewController: UIViewController {
     
     private let detailBookView = DetailBookView()
     
+    let coreDataManager = CoreDataManager.shared
+    
     /// 셀에서 전달받을 BookData 변수
     var bookData: Document? {
         didSet {
             setupBookDatas()
-        }
-    }
-    
-    /// 이미지URLString 변수
-    var bookImageURL: String? {
-        didSet {
-            loadImage()
         }
     }
     
@@ -31,7 +26,7 @@ class DetailBookViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupButtonActions()
     }
     
     private func setupBookDatas() {
@@ -41,13 +36,13 @@ class DetailBookViewController: UIViewController {
         detailBookView.bookPriceLabel.text = "\(bookData.price ?? 0)원"
         detailBookView.bookDescriptionLabel.text = bookData.contents
         
-        self.bookImageURL = bookData.thumbnail
+        loadImage(with: bookData.thumbnail)
             
     }
     
     // MARK: - 디테일 뷰 이미지 로드
-    private func loadImage() {
-        guard let imageURL = self.bookImageURL, let url = URL(string: imageURL) else { return }
+    private func loadImage(with imageUrl: String?) {
+        guard let urlString = imageUrl, let url = URL(string: urlString)  else { return }
         
         DispatchQueue.global().async { [weak self] in
             guard let data = try? Data(contentsOf: url) else { return }
@@ -58,4 +53,20 @@ class DetailBookViewController: UIViewController {
             }
         }
     }
+    
+    // 1. 버튼이 눌렸을 때 클로저 전달(할당)
+    private func setupButtonActions() {
+        
+        detailBookView.saveButtonPressed = { [weak self] in
+               guard let bookData = self?.bookData else { return }
+               self?.coreDataManager.saveBook(with: bookData) {
+                   print("저장완료")
+                   self?.dismiss(animated: true)
+               }
+           }
+           
+        detailBookView.closeButtonPressed = { [weak self] in
+            self?.dismiss(animated: true)
+           }
+       }
 }
