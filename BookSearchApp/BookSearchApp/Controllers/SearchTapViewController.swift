@@ -82,7 +82,21 @@ extension SearchTapViewController: UICollectionViewDataSource {
 }
 
 extension SearchTapViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let detailVC = DetailBookViewController()
+        
+        switch indexPath.section {
+        case 0:
+            return
+        case 1:
+            detailVC.bookData = bookArrays[indexPath.row]
+        default:
+            return
+        }
+        
+        present(detailVC, animated: true, completion: nil)
+    }
 }
 
 extension SearchTapViewController: UISearchBarDelegate {
@@ -92,9 +106,10 @@ extension SearchTapViewController: UISearchBarDelegate {
         guard let text = searchTapView.searchBar.text else { return }
         print(text)
         
+        // 빈배열로 다시 만들어줌
         self.bookArrays = []
         
-        // 네트워킹 시작
+        // 서치바에 입력된 텍스트로 네트워킹 시작
         networkManager.fetchBooks(searchTerm: text) { result in
             switch result {
             case .success(let bookDatas):

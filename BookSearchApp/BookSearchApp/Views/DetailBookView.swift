@@ -6,15 +6,131 @@
 //
 
 import UIKit
+import SnapKit
 
-class DetailBookView: UIView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+final class DetailBookView: UIView {
+    
+    let bookTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 24)
+        label.textColor = .black
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let bookAuthorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .gray
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let bookImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 10
+        return imageView
+    }()
+    
+    let bookPriceLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20)
+        label.textColor = .black
+        return label
+    }()
+    
+    let bookDescriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .black
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    lazy var saveButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("담기", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemGreen
+        button.layer.cornerRadius = 20
+        return button
+    }()
+    
+    lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("X", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .gray
+        button.layer.cornerRadius = 20
+        return button
+    }()
+    
+    
+    //MARK: - 생성자 셋팅
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .white
+        configureUI()
     }
-    */
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureUI() {
+        
+        [
+            bookTitleLabel,
+            bookAuthorLabel,
+            bookImageView,
+            bookPriceLabel,
+            bookDescriptionLabel,
+            saveButton,
+            closeButton
+        ].forEach { self.addSubview($0) }
+        
+        bookTitleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
+            make.centerX.equalToSuperview()
+        }
+        
+        bookAuthorLabel.snp.makeConstraints { make in
+            make.top.equalTo(bookTitleLabel.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+        }
+        
+        bookImageView.snp.makeConstraints { make in
+            make.top.equalTo(bookAuthorLabel.snp.bottom).offset(30)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(240)
+            make.height.equalTo(360)
+        }
+        
+        bookPriceLabel.snp.makeConstraints { make in
+            make.top.equalTo(bookImageView.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+        }
+        
+        bookDescriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(bookPriceLabel.snp.bottom).offset(30)
+            make.leading.equalToSuperview().offset(30)
+            make.trailing.equalToSuperview().offset(-30)
+        }
+        
+        closeButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(30)
+            make.bottom.equalToSuperview().offset(-20)
+            make.height.equalTo(50)
+            make.width.equalTo(60)
+        }
+        
+        saveButton.snp.makeConstraints { make in
+            make.leading.equalTo(closeButton.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview().offset(-20)
+            make.height.equalTo(50)
+        }
+    }
 }
