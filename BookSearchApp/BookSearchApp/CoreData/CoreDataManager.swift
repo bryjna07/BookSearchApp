@@ -71,10 +71,30 @@ final class CoreDataManager {
         completion()
     }
     
+    // MARK: - [DeleteAll] 코어데이터에서 모든 데이터 삭제
+    func deleteAllBooks(completion: @escaping () -> Void) {
+        
+        if let context = context {
+            
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: self.modelName)
+            
+            do {
+                // 전체 삭제 요청
+                try context.execute(request)
+                context.reset()
+                completion()
+            } catch {
+                print("전체 삭제 실패")
+                completion()
+            }
+        }
+    }
+    
     // MARK: - [Delete] 코어데이터에서 데이터 삭제
     func deleteBook(with book: BookSaved, completion: @escaping () -> Void) {
         
         if let context = context {
+            
             context.delete(book)
             
             appDelegate?.saveContext()

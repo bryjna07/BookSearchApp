@@ -9,7 +9,7 @@ import UIKit
 
 class SearchTapViewController: UIViewController {
     
-    private let searchTapView = SearchTapView()
+    let searchTapView = SearchTapView()
     
     let networkManager = NetworkManager.shared
     
@@ -24,6 +24,11 @@ class SearchTapViewController: UIViewController {
         searchTapView.searchCollectionView.delegate = self
         searchTapView.searchCollectionView.dataSource = self
         searchTapView.searchBar.delegate = self
+    }
+    
+    // 바깥 터치시 키보드 내리기
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }
 
@@ -98,9 +103,15 @@ extension SearchTapViewController: UICollectionViewDelegate {
 
 extension SearchTapViewController: UISearchBarDelegate {
     
+    // 입력 시작되었을 때 키보드
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.becomeFirstResponder()
+    }
+    
     // 검색버튼 눌렀을 때
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchTapView.searchBar.text else { return }
+        self.view.endEditing(true)
         print(text)
         
         // 빈배열로 다시 만들어줌

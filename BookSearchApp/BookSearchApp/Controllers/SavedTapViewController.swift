@@ -38,15 +38,43 @@ final class SavedTapViewController: UIViewController {
     /// 버튼 클로저 할당
     func setupButtonAction() {
         
-//        savedTapView.deleteButtonPressed = { [weak self] in
-//
-//            
-//        }
-//        
-//        savedTapView.plusButtonPressed = { [weak self] in
-//          
-//            
-//        }
+        savedTapView.deleteButtonPressed = { [weak self] in
+            guard let self = self else { return }
+            
+            // 알럿 생성
+            let alert = UIAlertController(title: "⚠️ 주의", message: "정말 삭제하시겠습니까?", preferredStyle: .alert)
+            
+            let succes = UIAlertAction(title: "확인", style: .default) { action in
+                
+                // 코어데이터에서 전체 삭제
+                self.coreDataManager.deleteAllBooks {
+                    DispatchQueue.main.async {
+                        self.savedBooks = []
+                        self.savedTapView.tableView.reloadData()
+                        print("전체 삭제 완료")
+                    }
+                }
+            }
+            
+            let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+            
+            alert.addAction(succes)
+            alert.addAction(cancel)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        savedTapView.plusButtonPressed = { [weak self] in
+            guard let self = self else { return }
+            
+            // 화면 이동
+            self.tabBarController?.selectedIndex = 0
+            
+            // 기존 검색 탭 뷰 컨트롤러의 서치바 활성화
+            if let searchVC = self.tabBarController?.viewControllers?.first as? SearchTapViewController {
+                searchVC.searchTapView.searchBar.becomeFirstResponder()
+            }
+        }
     }
 }
 
