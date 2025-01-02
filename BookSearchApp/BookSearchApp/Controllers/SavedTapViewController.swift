@@ -33,6 +33,7 @@ final class SavedTapViewController: UIViewController {
         super.viewDidLoad()
         setupButtonAction()
         savedTapView.tableView.dataSource = self
+        savedTapView.tableView.delegate = self
     }
     
     /// 버튼 클로저 할당
@@ -95,5 +96,29 @@ extension SavedTapViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         
         return cell
+    }
+}
+
+extension SavedTapViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            let deleteBook = savedBooks[indexPath.row]
+            
+            // 배열에서 삭제
+            savedBooks.remove(at: indexPath.row)
+            
+            // 코어데이터에서 삭제
+            coreDataManager.deleteBook(with: deleteBook)
+            
+            // 삭제 애니메이션
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        return "삭제"
     }
 }

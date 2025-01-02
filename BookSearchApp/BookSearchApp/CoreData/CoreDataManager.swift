@@ -76,11 +76,13 @@ final class CoreDataManager {
         
         if let context = context {
             
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: self.modelName)
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: self.modelName)
+            
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             
             do {
                 // 전체 삭제 요청
-                try context.execute(request)
+                try context.execute(deleteRequest)
                 context.reset()
                 completion()
             } catch {
@@ -91,7 +93,7 @@ final class CoreDataManager {
     }
     
     // MARK: - [Delete] 코어데이터에서 데이터 삭제
-    func deleteBook(with book: BookSaved, completion: @escaping () -> Void) {
+    func deleteBook(with book: BookSaved) {
         
         if let context = context {
             
