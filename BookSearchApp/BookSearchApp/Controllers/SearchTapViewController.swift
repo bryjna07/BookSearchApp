@@ -21,11 +21,8 @@ class SearchTapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         searchTapView.searchCollectionView.delegate = self
         searchTapView.searchCollectionView.dataSource = self
-        self.navigationController?.navigationBar.isHidden = true
-        
         searchTapView.searchBar.delegate = self
     }
 }

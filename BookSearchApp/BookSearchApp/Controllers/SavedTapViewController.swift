@@ -10,20 +10,15 @@ import SnapKit
 
 final class SavedTapViewController: UIViewController {
     
+    private let savedTapView = SavedTapView()
+    
     var savedBooks: [BookSaved] = []
     
     let coreDataManager = CoreDataManager.shared
     
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.dataSource = self
-        tableView.rowHeight = 70
-        tableView.separatorStyle = .none
-        
-        // 셀 등록
-        tableView.register(SavedListCell.self, forCellReuseIdentifier: SavedListCell.id)
-        return tableView
-    }()
+    override func loadView() {
+        self.view = savedTapView
+    }
     
     // 뷰가 나타날때마다
     override func viewWillAppear(_ animated: Bool) {
@@ -31,22 +26,27 @@ final class SavedTapViewController: UIViewController {
         
         // 코어데이터에 저장된 데이터 불러오기
         savedBooks = coreDataManager.getBookSavedArrayFromCoreData()
-        tableView.reloadData()
+        savedTapView.tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
+        setupButtonAction()
+        savedTapView.tableView.dataSource = self
     }
     
-    
-    private func configureUI() {
+    /// 버튼 클로저 할당
+    func setupButtonAction() {
         
-        view.addSubview(tableView)
-        
-        tableView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-        }
+//        savedTapView.deleteButtonPressed = { [weak self] in
+//
+//            
+//        }
+//        
+//        savedTapView.plusButtonPressed = { [weak self] in
+//          
+//            
+//        }
     }
 }
 

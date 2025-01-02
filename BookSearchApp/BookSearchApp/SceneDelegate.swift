@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarVC = UITabBarController()
         
-        let vc1 = UINavigationController(rootViewController: SearchTapViewController())
+        let vc1 = SearchTapViewController()
         let vc2 = SavedTapViewController()
         
         vc1.title = "검색 탭"
@@ -30,7 +30,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarVC.tabBar.backgroundColor = .white
         tabBarVC.tabBar.tintColor = .black
         tabBarVC.tabBar.layer.borderWidth = 2
-        
         
         window?.rootViewController = tabBarVC
         window?.makeKeyAndVisible()
