@@ -15,6 +15,14 @@ class SearchTapViewController: UIViewController {
     
     var bookArrays: [Document] = []
     
+    var recentBookArrays: [Document] = []
+    
+    var recentBooks: Document? {
+        didSet {
+            configureWithRecentBooks()
+        }
+    }
+    
     override func loadView() {
         self.view = searchTapView
     }
@@ -24,6 +32,16 @@ class SearchTapViewController: UIViewController {
         searchTapView.searchCollectionView.delegate = self
         searchTapView.searchCollectionView.dataSource = self
         searchTapView.searchBar.delegate = self
+    }
+    
+    // didSelectItemAt 누르면 recentBooks 에서 didSet 실행
+    private func configureWithRecentBooks() {
+        guard let book = self.recentBooks else { return }
+        self.recentBookArrays.insert(book, at: 0)
+        if self.recentBookArrays.count > 10 {
+            self.recentBookArrays.removeLast()
+        }
+        self.searchTapView.searchCollectionView.reloadData()
     }
     
     // 바깥 터치시 키보드 내리기
@@ -38,8 +56,9 @@ extension SearchTapViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         if section == 0 {
-            return 0
+            return recentBookArrays.count
         } else {
             return bookArrays.count
         }
@@ -49,6 +68,8 @@ extension SearchTapViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentBooksCell.id, for: indexPath) as! RecentBooksCell
+            
+            cell.titleLabel.text = recentBookArrays[indexPath.row].title
             
             return cell
         } else {
@@ -93,6 +114,7 @@ extension SearchTapViewController: UICollectionViewDelegate {
             return
         case 1:
             detailVC.bookData = bookArrays[indexPath.row]
+            self.recentBooks = bookArrays[indexPath.row]
         default:
             return
         }

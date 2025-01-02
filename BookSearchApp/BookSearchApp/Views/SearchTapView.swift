@@ -25,9 +25,9 @@ final class SearchTapView: UIView {
         let layout = createCompositionalLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
+        collectionView.register(RecentBooksCell.self, forCellWithReuseIdentifier: RecentBooksCell.id)
         collectionView.register(SearchListCell.self, forCellWithReuseIdentifier: SearchListCell.id)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.id)
-        
         
         collectionView.backgroundColor = .white
         return collectionView
@@ -70,7 +70,7 @@ final class SearchTapView: UIView {
             switch sectionIndex {
                 
             case 0:
-                return nil
+                return self.createRecentBooksSection()
                 
             case 1:
                 return self.createSearchListSection()
@@ -79,6 +79,50 @@ final class SearchTapView: UIView {
                 return nil
             }
         }
+    }
+    
+    /// 최근 본 책 섹션 레이아웃
+    private func createRecentBooksSection() -> NSCollectionLayoutSection {
+        
+        // 아이템 크기
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(60),
+            heightDimension: .absolute(80)
+        )
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // 그룹 크기
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(2.0),
+            heightDimension: .absolute(80)
+        )
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        // 아이템 사이의 간격
+        group.interItemSpacing = .fixed(8)
+        
+        // 섹션
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.interGroupSpacing = 10
+        section.contentInsets = .init(top: 10, leading: 10, bottom: 10, trailing: 10)
+        
+        // 헤더 추가
+        let headerSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(30)
+        )
+        
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
+        section.boundarySupplementaryItems = [header]
+        
+        return section
     }
     
     /// 검색결과섹션 레이아웃
