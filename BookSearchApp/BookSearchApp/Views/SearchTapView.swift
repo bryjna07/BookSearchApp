@@ -10,6 +10,9 @@ import SnapKit
 
 final class SearchTapView: UIView {
     
+    // 최근 본 책 숫자 넘겨받는 클로저
+    var recentBooksCountHandler: (() -> Int)?
+    
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "책이름 검색"
@@ -70,6 +73,10 @@ final class SearchTapView: UIView {
             switch sectionIndex {
                 
             case 0:
+                // 최근 본 책 0이면 nil 반환
+                if let count = self.recentBooksCountHandler?(), count == 0 {
+                    return nil
+                }
                 return self.createRecentBooksSection()
                 
             case 1:

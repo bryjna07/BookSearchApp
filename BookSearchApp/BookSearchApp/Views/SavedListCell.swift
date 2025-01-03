@@ -22,18 +22,21 @@ final class SavedListCell: UITableViewCell {
     let bookNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
     let authorNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .gray
+        label.font = .systemFont(ofSize: 18)
         return label
     }()
     
     let bookPriceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
+        label.font = .systemFont(ofSize: 16)
         return label
     }()
     
@@ -63,17 +66,18 @@ final class SavedListCell: UITableViewCell {
         
         bookNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(10)
+            make.trailing.equalTo(contentView.snp.centerX).offset(10)
             make.centerY.equalToSuperview()
         }
         
         authorNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(bookNameLabel.snp.trailing).offset(10)
+            make.leading.equalTo(bookNameLabel.snp.trailing).offset(5)
             make.centerY.equalToSuperview()
+            make.width.equalTo(70)
         }
         
         bookPriceLabel.snp.makeConstraints { make in
-            make.leading.equalTo(authorNameLabel.snp.trailing).offset(10)
-            make.trailing.equalToSuperview().inset(10)
+            make.trailing.equalToSuperview().inset(8)
             make.centerY.equalToSuperview()
         }
     }

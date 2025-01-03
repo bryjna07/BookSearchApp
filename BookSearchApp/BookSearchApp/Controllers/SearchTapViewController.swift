@@ -29,6 +29,12 @@ class SearchTapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // 최근검색 섹션이 없을 때 관련
+        searchTapView.recentBooksCountHandler = { [weak self] in
+             return self?.recentBookArrays.count ?? 0
+         }
+        
         searchTapView.searchCollectionView.delegate = self
         searchTapView.searchCollectionView.dataSource = self
         searchTapView.searchBar.delegate = self
