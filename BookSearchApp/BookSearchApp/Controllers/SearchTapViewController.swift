@@ -32,8 +32,8 @@ class SearchTapViewController: UIViewController {
         
         // 최근검색 섹션이 없을 때 관련
         searchTapView.recentBooksCountHandler = { [weak self] in
-             return self?.recentBookArrays.count ?? 0
-         }
+            return self?.recentBookArrays.count ?? 0
+        }
         
         searchTapView.searchCollectionView.delegate = self
         searchTapView.searchCollectionView.dataSource = self
@@ -76,6 +76,16 @@ extension SearchTapViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentBooksCell.id, for: indexPath) as! RecentBooksCell
             
             cell.titleLabel.text = recentBookArrays[indexPath.row].title
+            
+            // 셀 색상 배열 정의
+            let colors: [UIColor] = [
+                .systemRed, .systemOrange, .systemYellow, .systemGreen,
+                .systemBlue, .systemMint, .systemPink , .systemPurple,
+                .systemBrown, .systemGray2
+            ]
+            
+            let colorIndex = indexPath.row % colors.count
+            cell.imageView.backgroundColor = colors[colorIndex]
             
             return cell
         } else {

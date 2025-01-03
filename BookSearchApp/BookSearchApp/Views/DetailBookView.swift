@@ -14,6 +14,18 @@ final class DetailBookView: UIView {
     var saveButtonPressed: () -> Void =  { }
     var closeButtonPressed: () -> Void =  { }
     
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.alwaysBounceVertical = true
+        scrollView.showsVerticalScrollIndicator = true
+        return scrollView
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
     let bookTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 24)
@@ -97,14 +109,30 @@ final class DetailBookView: UIView {
     private func configureUI() {
         
         [
+            scrollView,
+            saveButton,
+            closeButton
+        ].forEach { self.addSubview($0) }
+        
+        scrollView.addSubview(contentView)
+        
+        [
             bookTitleLabel,
             bookAuthorLabel,
             bookImageView,
             bookPriceLabel,
-            bookDescriptionLabel,
-            saveButton,
-            closeButton
-        ].forEach { self.addSubview($0) }
+            bookDescriptionLabel
+        ].forEach { contentView.addSubview($0) }
+        
+        scrollView.snp.makeConstraints { make in
+              make.top.leading.trailing.equalToSuperview()
+              make.bottom.equalToSuperview().offset(-70)
+          }
+        
+        contentView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+                make.width.equalToSuperview()
+            }
         
         bookTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
@@ -132,6 +160,7 @@ final class DetailBookView: UIView {
             make.top.equalTo(bookPriceLabel.snp.bottom).offset(30)
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
+            make.bottom.equalToSuperview().offset(-30)
         }
         
         closeButton.snp.makeConstraints { make in
