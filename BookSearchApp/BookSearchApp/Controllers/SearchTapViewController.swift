@@ -177,7 +177,7 @@ extension SearchTapViewController: UISearchBarDelegate {
 extension SearchTapViewController: SaveBookDelegate {
     func didSaveBook(title: String) {
         
-        let alert = UIAlertController(title: nil, message: "‘\(title)’ 책 담기 완료!", preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: "‘\(title)’\n책 담기 완료!", preferredStyle: .alert)
         
                alert.addAction(UIAlertAction(title: "확인", style: .default))
         

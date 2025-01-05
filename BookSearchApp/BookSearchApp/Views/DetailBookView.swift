@@ -31,6 +31,7 @@ final class DetailBookView: UIView {
         label.font = .boldSystemFont(ofSize: 24)
         label.textColor = .black
         label.numberOfLines = 0
+        label.textAlignment = .center
         return label
     }()
     
@@ -136,7 +137,7 @@ final class DetailBookView: UIView {
         
         bookTitleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(16)
-            make.centerX.equalToSuperview()
+            make.horizontalEdges.equalToSuperview().inset(30)
         }
         
         bookAuthorLabel.snp.makeConstraints { make in
