@@ -125,6 +125,9 @@ extension SearchTapViewController: UICollectionViewDelegate {
         
         let detailVC = DetailBookViewController()
         
+        // 알럿 delegate 설정
+        detailVC.delegate = self
+        
         switch indexPath.section {
         case 0:
             return
@@ -167,5 +170,17 @@ extension SearchTapViewController: UISearchBarDelegate {
                 print(error.localizedDescription)
             }
         }
+    }
+}
+
+/// 알럿 delegate 프로토콜
+extension SearchTapViewController: SaveBookDelegate {
+    func didSaveBook(title: String) {
+        
+        let alert = UIAlertController(title: nil, message: "‘\(title)’ 책 담기 완료!", preferredStyle: .alert)
+        
+               alert.addAction(UIAlertAction(title: "확인", style: .default))
+        
+               present(alert, animated: true, completion: nil)
     }
 }

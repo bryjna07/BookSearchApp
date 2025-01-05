@@ -7,7 +7,13 @@
 
 import UIKit
 
-class DetailBookViewController: UIViewController {
+protocol SaveBookDelegate: AnyObject {
+    func didSaveBook(title: String)
+}
+
+final class DetailBookViewController: UIViewController {
+    
+    weak var delegate: SaveBookDelegate?
     
     private let detailBookView = DetailBookView()
     
@@ -58,10 +64,12 @@ class DetailBookViewController: UIViewController {
     private func setupButtonActions() {
         
         detailBookView.saveButtonPressed = { [weak self] in
-               guard let bookData = self?.bookData else { return }
-               self?.coreDataManager.saveBook(with: bookData) {
-                   print("저장완료")
-                   self?.dismiss(animated: true)
+               guard let self = self, let bookData = self.bookData else { return }
+               self.coreDataManager.saveBook(with: bookData) {
+                   
+                   self.dismiss(animated: true)
+                   
+                   self.delegate?.didSaveBook(title: bookData.title ?? "")
                }
            }
            
