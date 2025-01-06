@@ -30,7 +30,7 @@
 
 - **시작일**: 24/12/31  
 - **종료일**: 24/01/06
-- [노션 타임라인](https://www.notion.so/16ce828b210a8045925cccd59dcf629e)
+- [노션 타임라인](https://www.notion.so/16ce828b210a8045925cccd59dcf629e?pvs=4) 
 
 ---
 ## 📝 TIL , 🚨트러블 슈팅
