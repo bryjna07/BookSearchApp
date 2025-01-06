@@ -135,7 +135,7 @@ extension SearchTapViewController: UICollectionViewDelegate {
         
         switch indexPath.section {
         case 0:
-            return
+            detailVC.bookData = recentBookArrays[indexPath.row]
         case 1:
             detailVC.bookData = bookArrays[indexPath.row]
             self.recentBooks = bookArrays[indexPath.row]
