@@ -43,7 +43,7 @@ final class DetailBookViewController: UIViewController {
         detailBookView.bookDescriptionLabel.text = bookData.contents
         
         loadImage(with: bookData.thumbnail)
-            
+        
     }
     
     // MARK: - 디테일 뷰 이미지 로드
@@ -52,7 +52,6 @@ final class DetailBookViewController: UIViewController {
         
         DispatchQueue.global().async { [weak self] in
             guard let data = try? Data(contentsOf: url) else { return }
-            print("이미지 로드")
             
             DispatchQueue.main.async {
                 self?.detailBookView.bookImageView.image = UIImage(data: data)
@@ -64,17 +63,28 @@ final class DetailBookViewController: UIViewController {
     private func setupButtonActions() {
         
         detailBookView.saveButtonPressed = { [weak self] in
-               guard let self = self, let bookData = self.bookData else { return }
-               self.coreDataManager.saveBook(with: bookData) {
-                   
-                   self.dismiss(animated: true)
-                   
-                   self.delegate?.didSaveBook(title: bookData.title ?? "")
-               }
-           }
-           
+            guard let self = self, let bookData = self.bookData else { return }
+            
+            self.coreDataManager.saveBook(with: bookData) { isSaved in
+                if isSaved {
+                    // 저장 성공 알림
+                    self.dismiss(animated: true)
+                    self.delegate?.didSaveBook(title: bookData.title ?? "")
+                } else {
+                    // 중복 데이터 알림
+                    self.savedBookAlert(title: bookData.title ?? "")
+                }
+            }
+        }
+        
         detailBookView.closeButtonPressed = { [weak self] in
             self?.dismiss(animated: true)
-           }
-       }
+        }
+    }
+    // MARK: - 중복 알럿
+    private func savedBookAlert(title: String) {
+        let alert = UIAlertController(title: "중복된 책", message: "‘\(title)’ 책은 이미 담겨 있습니다.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default))
+        present(alert, animated: true, completion: nil)
+    }
 }

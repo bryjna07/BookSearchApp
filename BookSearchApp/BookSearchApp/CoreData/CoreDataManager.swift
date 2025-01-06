@@ -48,10 +48,27 @@ final class CoreDataManager {
     }
     
     // MARK: - [Create] 코어데이터에 데이터 생성 (Document -> BookSaved)
-    func saveBook(with book: Document, completion: @escaping () -> Void) {
+    func saveBook(with book: Document, completion: @escaping (Bool) -> Void) {
+        guard let isbn = book.isbn else {
+            completion(false)
+            return
+        }
         
         // 임시저장소 있는지 확인
         if let context = context {
+            
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: self.modelName)
+            fetchRequest.predicate = NSPredicate(format: "isbn = %@", isbn)
+            
+            do {
+                     let existingBooks = try context.fetch(fetchRequest)
+                     if !existingBooks.isEmpty {
+                         completion(false)
+                         return                     }
+                 } catch {
+                     completion(false)
+                     return
+                 }
             
             // 임시저장소에 있는 데이터를 그려줄 형태 파악하기
             if let entity = NSEntityDescription.entity(forEntityName: self.modelName, in: context) {
@@ -63,12 +80,15 @@ final class CoreDataManager {
                     bookSaved.title = book.title
                     bookSaved.authors = book.authors?.first
                     bookSaved.price = "\(book.price ?? 0)원"
+                    bookSaved.isbn = book.isbn
                     
                     appDelegate?.saveContext()
+                    completion(true)
+                    return
                 }
             }
         }
-        completion()
+        completion(false)
     }
     
     // MARK: - [DeleteAll] 코어데이터에서 모든 데이터 삭제
