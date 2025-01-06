@@ -5,7 +5,7 @@
 ---
 
 <p align="left">
-
+<img src="https://github.com/user-attachments/assets/22147703-36ec-4763-b9be-51d4897d2c16" alt="BookSearchApp" width="600">
 </p>
 
 ## 📋 프로젝트 개요
