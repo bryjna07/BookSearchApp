@@ -45,7 +45,6 @@
 
 ### 데이터 처리
 - CoreData
-- URLSession
 
 ### API 통신
 - URLSession
