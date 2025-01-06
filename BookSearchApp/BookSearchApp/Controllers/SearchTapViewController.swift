@@ -43,6 +43,11 @@ class SearchTapViewController: UIViewController {
     // didSelectItemAt 누르면 recentBooks 에서 didSet 실행
     private func configureWithRecentBooks() {
         guard let book = self.recentBooks else { return }
+        
+        if let alreadyIn = self.recentBookArrays.firstIndex(where: { $0 == book }) {
+            self.recentBookArrays.remove(at: alreadyIn)
+        }
+        
         self.recentBookArrays.insert(book, at: 0)
         if self.recentBookArrays.count > 10 {
             self.recentBookArrays.removeLast()

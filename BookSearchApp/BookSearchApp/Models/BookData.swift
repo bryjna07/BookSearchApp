@@ -14,13 +14,14 @@ struct BookData: Codable {
 }
 
 // MARK: - Document
-struct Document: Codable {
+struct Document: Codable, Equatable {
     let authors: [String]?
     let contents: String?
     let price: Int?
     let publisher: String?
     let thumbnail: String?
     let title: String?
+    let isbn: String?
 }
 
 // MARK: - Meta

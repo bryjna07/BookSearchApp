@@ -19,6 +19,7 @@ extension BookSaved {
     @NSManaged public var title: String?
     @NSManaged public var authors: String?
     @NSManaged public var price: String?
+    @NSManaged public var isbn: String?
 
 }
 
